@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container my-5">
+  <h1 class="mb-4 text-center">🌍 Weather Dashboard</h1>
+
+  <!-- City Input Form -->
+  <form method="POST" class="d-flex justify-content-center mb-4">
+    {% csrf_token %}
+    <input type="text" name="city" placeholder="Enter city" class="form-control w-50 me-2" required>
+    <button type="submit" class="btn btn-primary">Get Weather</button>
+  </form>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% else %}
+  <h3 class="text-center mb-4">Weather in {{ city }}</h3>
+
+  <!-- General Section -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="card text-center bg-primary text-white shadow">
+        <div class="card-body">
+          <h5 class="card-title">Temperature</h5>
+          <p class="display-6">{{ temperature }}°C</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center bg-info text-white shadow">
+        <div class="card-body">
+          <h5 class="card-title">Humidity</h5>
+          <p class="display-6">{{ humidity }}%</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center bg-warning text-dark shadow">
+        <div class="card-body">
+          <h5 class="card-title">Wind Speed</h5>
+          <p class="display-6">{{ wind_speed }} m/s</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center bg-success text-white shadow">
+        <div class="card-body">
+          <h5 class="card-title">Pressure</h5>
+          <p class="display-6">{{ pressure }} hPa</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Section -->
+  <h3 class="mb-3">5-Day Forecast</h3>
+  <table class="table table-bordered table-hover shadow">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Temperature (°C)</th>
+        <th>Humidity (%)</th>
+        <th>Wind Speed (m/s)</th>
+        <th>Pressure (hPa)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for day in history %}
+      <tr>
+        <td>{{ day.date }}</td>
+        <td>{{ day.temp }}</td>
+        <td>{{ day.humidity }}</td>
+        <td>{{ day.wind }}</td>
+        <td>{{ day.pressure }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+</body>
+</html>
